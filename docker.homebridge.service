@@ -1,0 +1,14 @@
+[Unit]
+Description=Homebridge
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop /homebridge
+ExecStartPre=-/usr/bin/docker rm /homebridge
+ExecStart=/usr/bin/docker run --name homebridge --network host -P --device /dev/vchiq --user 0:44 -v /root/homebridge:/homebridge ccaum/homebridge-ffmpeg-omx:latest
+
+[Install]
+WantedBy=multi-user.target
